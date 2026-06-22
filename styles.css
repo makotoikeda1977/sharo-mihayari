@@ -1,0 +1,90 @@
+:root{
+  --bg:#f4f6fb; --card:#fff; --ink:#1f2937; --sub:#6b7280; --line:#e5e7eb;
+  --primary:#0f766e; --primary-d:#0b5852;
+  --ok:#15803d; --ok-bg:#ecfdf5; --ok-line:#bbf7d0;
+  --ng:#b91c1c; --ng-bg:#fef2f2;
+  --warn:#b45309; --warn-bg:#fffbeb;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+  line-height:1.7; -webkit-text-size-adjust:100%;
+}
+.app-header{
+  background:var(--primary); color:#fff;
+  padding:14px 16px; display:flex; align-items:center; gap:10px;
+}
+.app-header .logo{
+  display:inline-flex; width:34px; height:34px; border-radius:8px;
+  background:rgba(255,255,255,.18); align-items:center; justify-content:center; font-weight:700;
+}
+.app-header h1{font-size:17px; margin:0; font-weight:600;}
+.app-header .tagline-sm{margin:0; font-size:12px; opacity:.85;}
+.view{max-width:680px; margin:0 auto; padding:16px;}
+
+.btn{
+  display:block; width:100%; border:1px solid var(--line); background:#fff; color:var(--ink);
+  padding:12px 16px; border-radius:10px; font-size:16px; cursor:pointer; margin-top:10px;
+}
+.btn:active{transform:scale(.99);}
+.btn.primary{background:var(--primary); color:#fff; border-color:var(--primary);}
+.btn.ghost{background:transparent; color:var(--sub);}
+.big-btn{font-size:18px; padding:16px;}
+
+/* home */
+.lead{font-size:15px;}
+.lead strong{color:var(--primary-d);}
+.ov{
+  display:flex; justify-content:space-between; align-items:center;
+  background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:14px;
+}
+.ov-l{color:var(--sub); font-size:14px;}
+.ov-v{font-size:24px; font-weight:700; color:var(--primary);}
+.note{font-size:12px; color:var(--sub); margin-top:16px;}
+
+/* quiz */
+.bar{height:6px; background:var(--line); border-radius:99px; overflow:hidden; margin-bottom:12px;}
+.bar-fill{height:100%; background:var(--primary); transition:width .3s;}
+.qmeta{display:flex; align-items:center; gap:8px; margin-bottom:10px; font-size:13px; color:var(--sub);}
+.qmeta .count{margin-left:auto;}
+.pill{display:inline-block; font-size:12px; padding:3px 10px; border-radius:8px;}
+.pill.subj{background:#e0f2f1; color:#0b5852;}
+.pill.type{background:var(--warn-bg); color:var(--warn); margin-bottom:10px;}
+.qcard{background:#fff; border:1px solid var(--line); border-radius:12px; padding:18px;}
+.sentence{font-size:17px; line-height:2.05; margin:0;}
+.pick{
+  cursor:pointer; border-bottom:1.5px dotted #94a3b8; border-radius:3px; padding:0 2px;
+  transition:background .15s;
+}
+.pick:hover{background:#f1f5f9;}
+.pick.hit{background:var(--ok-bg); color:var(--ok); border-bottom:2px solid var(--ok);}
+.pick.wrong{background:var(--ng-bg); color:var(--ng); border-bottom:2px solid var(--ng);}
+.hint{font-size:13px; color:var(--sub); margin:14px 0 0;}
+.miss{font-size:13px; color:var(--ng); margin:12px 0 0;}
+
+.explain{margin-top:14px; border:1px solid var(--ok-line); background:var(--ok-bg); border-radius:10px; padding:14px;}
+.ex-h{font-weight:600; color:var(--ok); margin-bottom:10px;}
+.ok-ic{display:inline-block; margin-right:6px; font-weight:700;}
+.diff{display:flex; flex-direction:column; gap:4px; font-size:15px; margin-bottom:8px;}
+.d-ng{color:var(--ng);}
+.d-ok{color:var(--ok);}
+.ex-body{font-size:14px; margin:8px 0;}
+.ex-law{font-size:12px; color:var(--sub); margin:0;}
+
+/* result */
+.result h2{font-size:18px;}
+.score{text-align:center; margin:16px 0;}
+.score .big{display:block; font-size:48px; font-weight:700; color:var(--primary); line-height:1.1;}
+.score .sub{color:var(--sub); font-size:14px;}
+.types{margin-top:10px;}
+.types h3{font-size:14px; margin:18px 0 8px;}
+.trow{display:flex; align-items:center; gap:8px; margin:6px 0; font-size:13px;}
+.tname{flex:0 0 44%; color:var(--sub);}
+.tbar{flex:1; height:8px; background:var(--line); border-radius:99px; overflow:hidden;}
+.tbar-f{display:block; height:100%;}
+.tbar-f.low{background:#dc2626;}
+.tbar-f.mid{background:#d97706;}
+.tbar-f.high{background:#16a34a;}
+.tpct{flex:0 0 40px; text-align:right;}
