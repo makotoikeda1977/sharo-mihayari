@@ -1,5 +1,5 @@
 /* Service Worker — オフラインでも使えるよう静的アセットをキャッシュ */
-const CACHE = 'mihayari-v1';
+const CACHE = 'mihayari-v2';
 const ASSETS = [
   './',
   './index.html',
@@ -9,6 +9,7 @@ const ASSETS = [
   './icons/icon-512.png',
   './icons/apple-touch-icon.png',
   './js/cards.js',
+  './js/cloze.js',
   './js/app.js',
 ];
 
