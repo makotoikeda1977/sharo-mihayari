@@ -1,5 +1,5 @@
 /* Service Worker — オフラインでも使えるよう静的アセットをキャッシュ */
-const CACHE = 'mihayari-v2';
+const CACHE = 'mihayari-v3';
 const ASSETS = [
   './',
   './index.html',

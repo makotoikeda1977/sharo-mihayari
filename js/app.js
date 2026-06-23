@@ -9,6 +9,12 @@
 
   function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
   function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  // SRS（Leitner）: box が低い（=苦手・未習）カードを優先。同boxはランダム。
+  function orderBySRS(items,stats){
+    var pc=(stats&&stats.perCard)||{};
+    return items.map(function(c){var p=pc[c.id]||{};return {id:c.id,box:p.box||0,r:Math.random()};})
+      .sort(function(a,b){return (a.box-b.box)||(a.r-b.r);}).map(function(x){return x.id;});
+  }
 
   // ---------- stats ----------
   function kbase(){return {byType:{},totalCorrect:0,totalTotal:0,perCard:{}};}
@@ -29,7 +35,7 @@
   // ================= KAIHEN (改変見破り) =================
   var kDeck=[],kPos=0,kResolved=false,kFirst=true,kSC=0,kSD=0;
   function kCard(id){for(var i=0;i<KAIHEN.length;i++)if(KAIHEN[i].id===id)return KAIHEN[i];return null;}
-  function startKaihen(){kDeck=shuffle(KAIHEN.map(function(c){return c.id;}));kPos=0;kSC=0;kSD=0;renderKaihen();}
+  function startKaihen(){kDeck=orderBySRS(KAIHEN,kload());kPos=0;kSC=0;kSD=0;renderKaihen();}
 
   function kBuild(card){
     var marks=card.targets.map(function(tg){return {t:tg.t,c:tg.c,idx:card.sentence.indexOf(tg.t)};})
@@ -49,8 +55,8 @@
     var s=kload();s.totalTotal++;if(ok)s.totalCorrect++;
     if(!s.byType[card.type])s.byType[card.type]={correct:0,total:0};
     s.byType[card.type].total++;if(ok)s.byType[card.type].correct++;
-    if(!s.perCard[card.id])s.perCard[card.id]={seen:0,correct:0};
-    s.perCard[card.id].seen++;if(ok)s.perCard[card.id].correct++;
+    var pc=s.perCard[card.id]||(s.perCard[card.id]={seen:0,correct:0,box:0});
+    pc.seen++; if(ok){pc.correct++; pc.box=(pc.box||0)+1;} else {pc.box=0;}
     ksave(s);
   }
   function renderKaihen(){
@@ -96,14 +102,14 @@
   // ================= CLOZE (虫食い・アクティブリコール) =================
   var cDeck=[],cPos=0,cSD=0,cSR=0;
   function cCard(id){for(var i=0;i<CLOZE.length;i++)if(CLOZE[i].id===id)return CLOZE[i];return null;}
-  function startCloze(){cDeck=shuffle(CLOZE.map(function(c){return c.id;}));cPos=0;cSD=0;cSR=0;renderCloze();}
+  function startCloze(){cDeck=orderBySRS(CLOZE,cload());cPos=0;cSD=0;cSR=0;renderCloze();}
   function cRecord(card,ok){
     cSD++;if(ok)cSR++;
     var s=cload();s.total++;if(ok)s.recalled++;
     if(!s.bySubject[card.subject])s.bySubject[card.subject]={recalled:0,total:0};
     s.bySubject[card.subject].total++;if(ok)s.bySubject[card.subject].recalled++;
-    if(!s.perCard[card.id])s.perCard[card.id]={seen:0,recalled:0};
-    s.perCard[card.id].seen++;if(ok)s.perCard[card.id].recalled++;
+    var pc=s.perCard[card.id]||(s.perCard[card.id]={seen:0,recalled:0,box:0});
+    pc.seen++; if(ok){pc.recalled++; pc.box=(pc.box||0)+1;} else {pc.box=0;}
     csave(s);
   }
   function renderCloze(){
@@ -162,7 +168,7 @@
       +'<button class="mode-card" id="m-cloze"><span class="mc-ic">🧠</span><span class="mc-t">虫食いで思い出す</span><span class="mc-d">赤バーを開いて想起＝アクティブリコール（'+CLOZE.length+'問）</span>'+(cov!==null?'<span class="mc-stat">想起率 '+cov+'%</span>':'')+'</button>'
       +'</div>';
     if(kov!==null||cov!==null)html+='<button class="btn ghost" id="reset">成績をリセット</button>';
-    html+='<p class="note">※ 試作版。過去問を現行法照合した長文カードを収録。</p></div>';
+    html+='<p class="note">※ 過去問を現行法照合した長文カードを収録。間違えた問題ほど先に出題されます（間隔反復）。</p></div>';
     view.innerHTML=html;
     document.getElementById('m-kaihen').addEventListener('click',function(){if(KAIHEN.length)startKaihen();});
     document.getElementById('m-cloze').addEventListener('click',function(){if(CLOZE.length)startCloze();});
